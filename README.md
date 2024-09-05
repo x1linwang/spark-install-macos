@@ -56,6 +56,7 @@ In the new notebook, you can test if everything is working correctly by running 
    ```
 
 2. Test PySpark:
+   Change to a python kernel and run the below command:
    ```
    %%python
    from pyspark.sql import SparkSession
@@ -66,12 +67,6 @@ In the new notebook, you can test if everything is working correctly by running 
    # Create a sample DataFrame
    df = spark.createDataFrame([(1, "a"), (2, "b"), (3, "c")], ["id", "letter"])
    df.show()
-   ```
-
-3. Test Spark SQL:
-   ```
-   %%sql
-   SELECT id, UPPER(letter) as upper_letter FROM __THIS__
    ```
 
 If all cells run without errors, congratulations! Your Spark environment with spylon kernel is set up correctly.
