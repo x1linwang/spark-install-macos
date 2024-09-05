@@ -72,6 +72,6 @@ add_to_file "export PYTHONPATH=\"$SPARK_HOME/python/:$SPARK_HOME/python/lib/py4j
 # Install spylon-kernel
 echo "Installing spylon-kernel..."
 $PYTHON_PATH -m pip install spylon-kernel
-$PYTHON_PATH -m spylon_kernel install
+$PYTHON_PATH -m spylon_kernel install --user
 
 echo "Setup complete! Please restart your terminal or run 'source ~/.zshrc' to apply the changes."
