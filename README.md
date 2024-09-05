@@ -50,12 +50,15 @@ This will open Jupyter Notebook in your default web browser.
 In the new notebook, you can test if everything is working correctly by running the following cells:
 
 1. Test Scala:
+
+   In the current spylon kernel, run the following command:
    ```
    val x = 1
    println(s"This is Scala. x = $x")
    ```
 
 2. Test PySpark:
+
    Change to a python kernel and run the below command:
    ```
    %%python
@@ -69,7 +72,7 @@ In the new notebook, you can test if everything is working correctly by running 
    df.show()
    ```
 
-If all cells run without errors, congratulations! Your Spark environment with spylon kernel is set up correctly.
+If both cells run without errors, congratulations! Your Spark environment with spylon kernel is set up correctly.
 
 ## Troubleshooting
 
