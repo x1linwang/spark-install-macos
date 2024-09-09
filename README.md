@@ -19,6 +19,7 @@ chmod +x macos_setup.sh
 # Run the script
 ./macos_setup.sh
 ```
+**Note**: This script installs Homebrew, which requires administrator privileges. You'll be prompted for your password. For security, the password field will remain blank as you type. Simply enter your password and press Return.  
 
 ## 2. Restart Terminal or Source .zshrc
 
