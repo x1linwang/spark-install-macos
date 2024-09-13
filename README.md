@@ -5,6 +5,9 @@ Apache-spark installation script for macOS. This script is customized for IEOR 4
 
 Follow these steps to set up Apache Spark on your macOS system and test the spylon kernel in Jupyter notebook.
 
+**Note**: If you have Anaconda installed, please quit it before running this script, as it may prevent the script from editing the `~/.zshrc` file.   
+
+
 ## 1. Download and Run the Setup Script
 
 Open Terminal and run the following commands:
@@ -78,6 +81,6 @@ If both cells run without errors, congratulations! Your Spark environment with s
 ## Troubleshooting
 
 - If you encounter any "command not found" errors, make sure you've restarted your Terminal or sourced your `.zshrc` file.
-- If Jupyter can't find the spylon kernel, try running `python -m spylon_kernel install` manually.
+- If Jupyter can't find the spylon kernel, try running `python -m spylon_kernel install --user` manually.
 - For any PySpark-related issues, verify that your `SPARK_HOME` and `PYSPARK_PYTHON` environment variables are set correctly by running `echo $SPARK_HOME` and `echo $PYSPARK_PYTHON` in the Terminal.
 - Contact yout TA if you encountered any other errors.
