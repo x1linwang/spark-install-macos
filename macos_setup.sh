@@ -86,7 +86,6 @@ SPARK_HOME=$(brew info apache-spark | awk '/Installed/ {getline; print $1}')/lib
 if [ -d "$SPARK_HOME" ]; then
     echo "SPARK_HOME is set to $SPARK_HOME"
     add_to_file "export SPARK_HOME=$SPARK_HOME" ~/.zshrc
-    add_to_file "export PATH=\"$SPARK_HOME/bin:\$PATH\"" ~/.zshrc
 else
     echo "Error: Could not determine SPARK_HOME."
     exit 1
