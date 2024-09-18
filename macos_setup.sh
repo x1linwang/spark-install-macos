@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 set -e  # Exit immediately if a command exits with a non-zero status.
 
@@ -11,6 +11,13 @@ command_exists() {
 add_to_file() {
     grep -qF "$1" "$2" || echo "$1" >> "$2"
 }
+
+# Check if the shell is zsh; if not, prompt to switch
+if [ "$SHELL" != "/bin/zsh" ]; then
+    echo "Your current shell is not zsh. Switching to zsh is recommended."
+    echo "Please upgrade your shell to zsh using the command: chsh -s /bin/zsh"
+    exit 1
+fi
 
 # Install Homebrew if not already installed
 if ! command_exists brew; then
@@ -27,34 +34,45 @@ if [[ ":$PATH:" != *":/opt/homebrew/bin:"* ]]; then
     add_to_file 'eval "$(/opt/homebrew/bin/brew shellenv)"' ~/.zshrc
 fi
 
-# Check for existing Python installation
+# Check for existing Python installation (Anaconda, Python 3.11 specifically)
 if command_exists python3; then
-    PYTHON_PATH=$(which python3)
-    echo "Found Python installation at $PYTHON_PATH"
+    PYTHON_VERSION=$(python3 --version | grep "3.11")
+    if [[ -z "$PYTHON_VERSION" ]]; then
+        echo "Python 3.11 not found. Installing Anaconda with Python 3.11..."
+        brew install --cask anaconda
+    else
+        echo "Python 3.11 is already installed."
+    fi
 else
-    echo "Python 3 not found. Installing Anaconda..."
+    echo "Python 3 not found. Installing Anaconda with Python 3.11..."
     brew install --cask anaconda
-    PYTHON_PATH="/opt/homebrew/anaconda3/bin/python"
-    echo "Adding Anaconda to PATH..."
-    add_to_file 'export PATH="/opt/homebrew/anaconda3/bin:$PATH"' ~/.zshrc
-    source ~/.zshrc
 fi
+
+# Ensure Anaconda's Python is Python 3.11
+echo "Checking Anaconda Python version..."
+ANACONDA_PYTHON_VERSION=$(/opt/homebrew/anaconda3/bin/python --version | grep "3.11")
+if [[ -z "$ANACONDA_PYTHON_VERSION" ]]; then
+    echo "Installing Python 3.11 for Anaconda..."
+    /opt/homebrew/anaconda3/bin/conda install python=3.11
+fi
+
+PYTHON_PATH="/opt/homebrew/anaconda3/bin/python"
+echo "Adding Anaconda to PATH..."
+add_to_file 'export PATH="/opt/homebrew/anaconda3/bin:$PATH"' ~/.zshrc
+source ~/.zshrc
 
 # Install Apache Spark (this will also install OpenJDK and Scala as dependencies)
 echo "Installing Apache Spark (along with OpenJDK and Scala)..."
 brew install apache-spark
 
-# Set JAVA_HOME
-# Get the installed version of openjdk and set JAVA_HOME dynamically
-# Currently openjdk@17 is installed by default
-# You might have to replace it with openjdk@xx based on brew prompt
+# Set JAVA_HOME dynamically
 JAVA_VERSION=$(brew info openjdk@17 | grep -o 'openjdk@[0-9.]*' | head -n 1)
 JAVA_HOME=$(brew --prefix "$JAVA_VERSION")/libexec/openjdk.jdk/Contents/Home
 echo "Setting JAVA_HOME..."
-add_to_file "export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"" ~/.zshrc
+add_to_file "export PATH=\"/opt/homebrew/opt/openjdk@17/bin:$PATH\"" ~/.zshrc
 add_to_file "export JAVA_HOME=$JAVA_HOME" ~/.zshrc
 
-# Set SPARK_HOME with version number
+# Set SPARK_HOME
 SPARK_VERSION=$(brew info apache-spark --json | jq -r '.[0].installed[0].version')
 SPARK_HOME="/opt/homebrew/Cellar/apache-spark/${SPARK_VERSION}/libexec"
 echo "Setting SPARK_HOME..."
