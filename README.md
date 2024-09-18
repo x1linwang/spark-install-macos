@@ -2,11 +2,23 @@
 Apache-spark installation script for macOS. This script is customized for IEOR 4526 Analytics on the Cloud offered by Columbia University.
 
 # macOS Spark Setup and Spylon Kernel Test Instructions
-
-Follow these steps to set up Apache Spark on your macOS system and test the spylon kernel in Jupyter notebook.
+This guide helps you install Apache Spark on macOS using Homebrew, along with configuring Anaconda with Python 3.11 for spylon kernel compatibility. We will also ensure the proper setup of the spylon kernel to work with Jupyter notebooks.
 
 **Note**: If you have Anaconda installed, please quit it before running this script, as it may prevent the script from editing the `~/.zshrc` file.   
 
+## 0. Verify or Switch to Zsh
+Open Terminal and run the following command to check your current shell:
+
+```bash
+echo $SHELL
+```
+If the output is `/bin/zsh`, you're already using Zsh and can proceed. 
+If it's `/bin/bash`, you should switch to Zsh by running the following command:
+
+```bash
+chsh -s /bin/zsh
+```
+After running this, close and reopen your Terminal for the change to take effect.
 
 ## 1. Download and Run the Setup Script
 
@@ -63,7 +75,7 @@ In the new notebook, you can test if everything is working correctly by running 
 
 2. Test PySpark:
 
-   Change to a python kernel and run the below command:
+   In the same spylon kernel, run the following command:
    ```
    %%python
    from pyspark.sql import SparkSession
@@ -83,4 +95,4 @@ If both cells run without errors, congratulations! Your Spark environment with s
 - If you encounter any "command not found" errors, make sure you've restarted your Terminal or sourced your `.zshrc` file.
 - If Jupyter can't find the spylon kernel, try running `python -m spylon_kernel install --user` manually.
 - For any PySpark-related issues, verify that your `SPARK_HOME` and `PYSPARK_PYTHON` environment variables are set correctly by running `echo $SPARK_HOME` and `echo $PYSPARK_PYTHON` in the Terminal.
-- Contact yout TA if you encountered any other errors.
+- Contact your TA if you encounter any other errors.
